@@ -127,9 +127,9 @@ where
                 };
 
                 compositor::with_states(&surface, |states| {
-                    let mut representation = states
-                        .cached_state
-                        .pending::<Option<ColorRepresentationSurfaceCachedState>>();
+                    let mut cache = states.cached_state.get::<Option<ColorRepresentationSurfaceCachedState>>();
+
+                    let mut representation = cache.pending();
                     if representation.is_none() {
                         *representation = Some(ColorRepresentationSurfaceCachedState::default());
                     }
@@ -152,9 +152,9 @@ where
                 };
 
                 compositor::with_states(&surface, |states| {
-                    let mut representation = states
-                        .cached_state
-                        .pending::<Option<ColorRepresentationSurfaceCachedState>>();
+                    let mut cache = states.cached_state.get::<Option<ColorRepresentationSurfaceCachedState>>();
+
+                    let mut representation = cache.pending();
                     if representation.is_none() {
                         *representation = Some(ColorRepresentationSurfaceCachedState::default());
                     }
@@ -177,9 +177,9 @@ where
                 };
 
                 compositor::with_states(&surface, |states| {
-                    let mut representation = states
-                        .cached_state
-                        .pending::<Option<ColorRepresentationSurfaceCachedState>>();
+                    let mut cache = states.cached_state.get::<Option<ColorRepresentationSurfaceCachedState>>();
+
+                    let mut representation = cache.pending();
                     if representation.is_none() {
                         *representation = Some(ColorRepresentationSurfaceCachedState::default());
                     }
@@ -207,8 +207,7 @@ where
             }
 
             *states
-                .cached_state
-                .pending::<Option<ColorRepresentationSurfaceCachedState>>() = None;
+                .cached_state.get::<Option<ColorRepresentationSurfaceCachedState>>().pending() = None;
         });
     }
 }

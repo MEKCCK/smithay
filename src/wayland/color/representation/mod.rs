@@ -56,8 +56,7 @@ pub struct ColorRepresentation {
 pub fn get_color_representation(surface: &WlSurface) -> ColorRepresentation {
     compositor::with_states(surface, |states| {
         states
-            .cached_state
-            .current::<Option<ColorRepresentationSurfaceCachedState>>()
+            .cached_state.get::<Option<ColorRepresentationSurfaceCachedState>>().current()
             .map(|state| ColorRepresentation {
                 coefficient: state.coefficient,
                 chroma_location: state.chroma_location,
