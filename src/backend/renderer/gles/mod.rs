@@ -1533,7 +1533,12 @@ impl ExportMem for GlesRenderer {
         }
 
         let size = texture_mapping.size();
-        let len = size.w * size.h * 4;
+        // The mapping carries the GL format it was read with, so derive the sample size from it
+        // instead of assuming 32-bit pixels: half-float (64-bit) mappings are readable too.
+        let bpp = gl_bpp(texture_mapping.format, texture_mapping.layout)
+            .ok_or(GlesError::UnsupportedPixelLayout)?
+            / 8;
+        let len = size.w * size.h * bpp as i32;
 
         let mapping_ptr = texture_mapping.mapping.load(Ordering::SeqCst);
         let ptr = if mapping_ptr.is_null() {
